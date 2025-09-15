@@ -24,8 +24,8 @@ public class UserRequest {
     private String email;
     
     @NotBlank(message = "{\"mensaje\": \"La contraseña es requerida\"}")
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=(?:[^0-9]*[0-9]){2}(?:[^0-9]*$))[a-zA-Z0-9]*$", 
-             message = "{\"mensaje\": \"La contraseña debe contener al menos una mayúscula, minúsculas y dos números\"}")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=(.*[0-9]){2,})[a-zA-Z0-9]*$", 
+             message = "{\"mensaje\": \"La contraseña debe contener al menos una mayúscula, minúsculas y al menos dos números\"}")
     private String password;
     
  
