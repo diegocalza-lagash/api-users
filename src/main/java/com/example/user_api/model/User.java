@@ -1,24 +1,10 @@
 package com.example.user_api.model;
 
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Builder;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -63,9 +49,6 @@ public class User {
     
     private String token;
     
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    
-    
     @PrePersist
     protected void onCreate() {
         LocalDateTime now = LocalDateTime.now();
@@ -73,7 +56,7 @@ public class User {
         this.modified = now;
         this.lastLogin = now;
         this.isActive = true;
-        this.token = UUID.randomUUID().toString();
+    
     }
     
     @PreUpdate

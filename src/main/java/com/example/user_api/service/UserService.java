@@ -5,6 +5,7 @@ import com.example.user_api.dto.UserResponse;
 import com.example.user_api.exception.EmailAlreadyExistsException;
 import com.example.user_api.model.User;
 import com.example.user_api.repository.UserRepository;
+import com.example.user_api.util.TokenGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final TokenGenerator tokenGenerator;
 
     @Transactional
     public UserResponse createUser(UserRequest userRequest) {
@@ -23,14 +25,15 @@ public class UserService {
             throw new EmailAlreadyExistsException("Email already exists: " + userRequest.getEmail());
         }
 
-        // Create and save the user
+    
+        // Create user with JWT token
         User user = User.builder()
                 .name(userRequest.getName())
                 .email(userRequest.getEmail())
                 .username(userRequest.getEmail())
                 .password(userRequest.getPassword())
+                .token(tokenGenerator.generateToken(userRequest.getEmail()))
                 .build();
-
 
         User savedUser = userRepository.save(user);
         return mapToUserResponse(savedUser);
