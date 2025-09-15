@@ -12,19 +12,20 @@ import lombok.Data;
 
 @Data
 public class UserRequest {
-    @NotBlank(message = "Name is required")
-    @Pattern(regexp = "^[a-zA-Z\\s]{3,100}$", message = "Name must be between 3 and 100 characters and contain only letters and spaces")
+    @NotBlank(message = "{\"mensaje\": \"El nombre es requerido\"}")
+    @Pattern(regexp = "^[a-zA-Z\\s]{3,100}$", 
+             message = "{\"mensaje\": \"El nombre debe tener entre 3 y 100 caracteres y contener solo letras y espacios\"}")
     private String name;
     
-    @NotBlank(message = "Email is required")
-    @Email(message = "Email should be valid")
+    @NotBlank(message = "{\"mensaje\": \"El correo electrónico es requerido\"}")
+    @Email(message = "{\"mensaje\": \"El formato del correo electrónico no es válido\"}")
     @Pattern(regexp = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$", 
-             message = "Email format is invalid. It should be in the format: example@domain.com")
+             message = "{\"mensaje\": \"El formato del correo electrónico no es válido. Debe ser: ejemplo@dominio.com\"}")
     private String email;
     
-    @NotBlank(message = "Password is required")
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=(?:[^0-9]*[0-9]){2})[a-zA-Z0-9]{8,}$", 
-             message = "Password must be at least 8 characters long, contain at least one uppercase letter, lowercase letters, and exactly two numbers")
+    @NotBlank(message = "{\"mensaje\": \"La contraseña es requerida\"}")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=(?:[^0-9]*[0-9]){2}(?:[^0-9]*$))[a-zA-Z0-9]*$", 
+             message = "{\"mensaje\": \"La contraseña debe contener al menos una mayúscula, minúsculas y dos números\"}")
     private String password;
     
  
