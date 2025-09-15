@@ -18,6 +18,8 @@ public class UserRequest {
     
     @NotBlank(message = "Email is required")
     @Email(message = "Email should be valid")
+    @Pattern(regexp = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$", 
+             message = "Email format is invalid. It should be in the format: example@domain.com")
     private String email;
     
     @NotBlank(message = "Password is required")

@@ -22,7 +22,7 @@ public class UserService {
     public UserResponse createUser(UserRequest userRequest) {
         // Check if email already exists
         if (userRepository.existsByEmail(userRequest.getEmail())) {
-            throw new EmailAlreadyExistsException("Email already exists: " + userRequest.getEmail());
+            throw new EmailAlreadyExistsException("El correo ya registrado: " + userRequest.getEmail());
         }
 
     

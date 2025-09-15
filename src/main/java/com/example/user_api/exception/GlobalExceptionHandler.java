@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<Map<String, Object>> handleEmailAlreadyExists(EmailAlreadyExistsException ex) {
-        return createErrorResponse(HttpStatus.BAD_REQUEST, "Email already exists", ex.getMessage());
+        return createErrorResponse(HttpStatus.BAD_REQUEST, "El correo ya registrado", ex.getMessage());
     }
 
     @ExceptionHandler(UsernameAlreadyExistsException.class)
