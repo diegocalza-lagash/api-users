@@ -11,9 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.List;
@@ -98,6 +99,35 @@ public class UserControllerTest {
                 .content(objectMapper.writeValueAsString(userRequest)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.mensaje").exists());
+    }
+
+    @Test
+    @Transactional
+    public void getUserById_WithValidId_ShouldReturnUser() throws Exception {
+        // Arrange
+        UserRequest userRequest = createValidUserRequest();
+        MvcResult registerResult = mockMvc.perform(post("/api/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(userRequest)))
+                .andExpect(status().isCreated())
+                .andReturn();
+        
+        String response = registerResult.getResponse().getContentAsString();
+        String userId = objectMapper.readTree(response).path("id").asText();
+        
+        // Act&Assert
+        mockMvc.perform(get("/api/users/" + userId)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(userId))
+                .andExpect(jsonPath("$.name").value(userRequest.getName()))
+                .andExpect(jsonPath("$.email").value(userRequest.getEmail()))
+                .andExpect(jsonPath("$.is_active").isBoolean())
+                .andExpect(jsonPath("$.created").exists())
+                .andExpect(jsonPath("$.phones").isArray())
+                .andExpect(jsonPath("$.phones[0].number").exists())
+                .andExpect(jsonPath("$.phones[0].citycode").exists())
+                .andExpect(jsonPath("$.phones[0].contrycode").exists());
     }
 
     private UserRequest createValidUserRequest() {
