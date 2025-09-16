@@ -1,8 +1,8 @@
 package com.example.user_api.controller;
 
-import com.example.user_api.dto.UserDetailsResponse;
-import com.example.user_api.dto.UserRequest;
-import com.example.user_api.dto.UserResponse;
+import com.example.user_api.dto.UserDetailsResponseDto;
+import com.example.user_api.dto.UserRequestDto;
+import com.example.user_api.dto.UserResponseDto;
 import com.example.user_api.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +22,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/users")
-    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
-        UserResponse response = userService.createUser(userRequest);
+    public ResponseEntity<UserResponseDto> createUser(@Valid @RequestBody UserRequestDto userRequest) {
+        UserResponseDto response = userService.createUser(userRequest);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
@@ -31,7 +31,7 @@ public class UserController {
     public ResponseEntity<?> getUserById(@PathVariable("id") String id) {
         try {
             UUID uuid = UUID.fromString(id);
-            UserDetailsResponse response = userService.getUserById(uuid);
+            UserDetailsResponseDto response = userService.getUserById(uuid);
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
             Map<String, String> errorResponse = new HashMap<>();

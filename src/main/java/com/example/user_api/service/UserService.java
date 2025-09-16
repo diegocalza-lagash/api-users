@@ -1,9 +1,9 @@
 package com.example.user_api.service;
 
 import com.example.user_api.dto.PhoneDto;
-import com.example.user_api.dto.UserDetailsResponse;
-import com.example.user_api.dto.UserRequest;
-import com.example.user_api.dto.UserResponse;
+import com.example.user_api.dto.UserDetailsResponseDto;
+import com.example.user_api.dto.UserRequestDto;
+import com.example.user_api.dto.UserResponseDto;
 import com.example.user_api.exception.EmailAlreadyExistsException;
 import com.example.user_api.exception.UserNotFoundException;
 import com.example.user_api.model.User;
@@ -24,7 +24,7 @@ public class UserService {
     private final TokenGenerator tokenGenerator;
 
     @Transactional
-    public UserResponse createUser(UserRequest userRequest) {
+    public UserResponseDto createUser(UserRequestDto userRequest) {
         // Check if email already exists
         if (userRepository.existsByEmail(userRequest.getEmail())) {
             throw new EmailAlreadyExistsException("El correo ya registrado: " + userRequest.getEmail());
@@ -58,14 +58,14 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserDetailsResponse getUserById(UUID id) {
+    public UserDetailsResponseDto getUserById(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado con ID: " + id));
-        return UserDetailsResponse.fromEntity(user);
+        return UserDetailsResponseDto.fromEntity(user);
     }
 
-    private UserResponse mapToUserResponse(User user) {
-        return UserResponse.builder()
+    private UserResponseDto mapToUserResponse(User user) {
+        return UserResponseDto.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .created(user.getCreated())

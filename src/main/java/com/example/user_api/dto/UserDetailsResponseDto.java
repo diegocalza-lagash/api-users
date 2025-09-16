@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class UserDetailsResponse extends UserResponse {
+public class UserDetailsResponseDto extends UserResponseDto {
     private List<PhoneDto> phones;
 
-    public static UserDetailsResponse fromEntity(User user) {
-        UserDetailsResponse response = UserDetailsResponse.builder()
+    public static UserDetailsResponseDto fromEntity(User user) {
+        UserDetailsResponseDto response = UserDetailsResponseDto.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .created(user.getCreated())

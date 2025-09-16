@@ -7,16 +7,15 @@ A RESTful API user register challenge for EY Consulting.
 ```mermaid
 classDiagram
     class UserController {
-        +registerUser(UserRequest): UserResponse
-        +getUserById(String): UserDetailsResponse
+        +registerUser(UserRequestDto): UserResponseDto
+        +getUserById(String): UserDetailsResponseDto
     }
     
     class UserService {
         -userRepository: UserRepository
-        -passwordEncoder: PasswordEncoder
         -jwtTokenUtil: JwtTokenUtil
-        +createUser(UserRequest): UserResponse
-        +getUserById(UUID): UserDetailsResponse
+        +createUser(UserRequestDto): UserResponseDto
+        +getUserById(UUID): UserDetailsResponseDto
     }
     
     class UserRepository {
@@ -60,24 +59,33 @@ classDiagram
         +countryCode: String
     }
     
-    class UserResponse {
-        +id: UUID
+    class UserRequestDto {
         +name: String
-        +created: String
-        +is_active: boolean
-        +token: String
+        +email: String
+        +password: String
+        +phones: List~PhoneDto~
     }
     
-    class UserDetailsResponse {
+    class UserResponseDto {
         +id: UUID
         +name: String
         +created: String
         +modified: String
         +lastLogin: String
-        +is_active: boolean
-        +phones: List~PhoneDto~
+        +isActive: boolean
         +token: String
     }
+    
+    class UserDetailsResponseDto {
+        +id: UUID
+        +name: String
+        +created: String
+        +modified: String
+        +lastLogin: String
+        +isActive: boolean
+        +phones: List~PhoneDto~
+    }
+    
     
     class GlobalExceptionHandler {
         +handleEmailAlreadyExists(EmailAlreadyExistsException)
@@ -97,8 +105,8 @@ classDiagram
     
     UserService --> TokenGenerator
     UserRepository --> User
-    UserController ..> UserRequest
-    UserController ..> UserResponse
+    UserController ..> UserRequestDto
+    UserController ..> UserResponseDto
     GlobalExceptionHandler ..> ErrorResponse
 ```
 

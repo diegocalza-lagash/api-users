@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @Data
-public class UserRequest {
+public class UserRequestDto {
     @NotBlank(message = "{\"mensaje\": \"El nombre es requerido\"}")
     @Pattern(regexp = "^[a-zA-Z\\s]{3,100}$", 
              message = "{\"mensaje\": \"El nombre debe tener entre 3 y 100 caracteres y contener solo letras y espacios\"}")

@@ -1,7 +1,7 @@
 package com.example.user_api.controller;
 
 import com.example.user_api.dto.PhoneDto;
-import com.example.user_api.dto.UserRequest;
+import com.example.user_api.dto.UserRequestDto;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ public class UserControllerTest {
 
     @Test
     public void registerUser_WithValidData_ShouldReturnCreated() throws Exception {
-        UserRequest userRequest = createValidUserRequest();
+        UserRequestDto userRequest = createValidUserRequest();
         
         mockMvc.perform(post("/api/users")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -46,7 +46,7 @@ public class UserControllerTest {
 
     @Test
     public void registerUser_WithInvalidEmail_ShouldReturnBadRequest() throws Exception {
-        UserRequest userRequest = createValidUserRequest();
+        UserRequestDto userRequest = createValidUserRequest();
         userRequest.setEmail("invalid-email");
         
         mockMvc.perform(post("/api/users")
@@ -58,7 +58,7 @@ public class UserControllerTest {
 
     @Test
     public void registerUser_WithInvalidPassword_ShouldReturnBadRequest() throws Exception {
-        UserRequest userRequest = createValidUserRequest();
+        UserRequestDto userRequest = createValidUserRequest();
         userRequest.setPassword("weak");
         
         MvcResult result = mockMvc.perform(post("/api/users")
@@ -77,7 +77,7 @@ public class UserControllerTest {
 
     @Test
     public void registerUser_WithDuplicateEmail_ShouldReturnBadRequest() throws Exception {
-        UserRequest userRequest = createValidUserRequest();
+        UserRequestDto userRequest = createValidUserRequest();
         mockMvc.perform(post("/api/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(userRequest)));
@@ -91,7 +91,7 @@ public class UserControllerTest {
 
     @Test
     public void registerUser_WithMissingRequiredFields_ShouldReturnBadRequest() throws Exception {
-        UserRequest userRequest = new UserRequest();
+        UserRequestDto userRequest = new UserRequestDto();
         
         mockMvc.perform(post("/api/users")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -104,7 +104,7 @@ public class UserControllerTest {
     @Transactional
     public void getUserById_WithValidId_ShouldReturnUser() throws Exception {
         // Arrange
-        UserRequest userRequest = createValidUserRequest();
+        UserRequestDto userRequest = createValidUserRequest();
         MvcResult registerResult = mockMvc.perform(post("/api/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(userRequest)))
@@ -128,8 +128,8 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.phones[0].contrycode").exists());
     }
 
-    private UserRequest createValidUserRequest() {
-        UserRequest userRequest = new UserRequest();
+    private UserRequestDto createValidUserRequest() {
+        UserRequestDto userRequest = new UserRequestDto();
         userRequest.setName("Test User");
         userRequest.setEmail("test@example.com");
         userRequest.setPassword("Validpass12");
