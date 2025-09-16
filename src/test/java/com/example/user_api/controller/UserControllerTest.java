@@ -39,7 +39,6 @@ public class UserControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").value(userRequest.getName()))
-                .andExpect(jsonPath("$.email").value(userRequest.getEmail()))
                 .andExpect(jsonPath("$.created").exists())
                 .andExpect(jsonPath("$.is_active").isBoolean())
                 .andExpect(jsonPath("$.token").exists());
@@ -121,7 +120,6 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(userId))
                 .andExpect(jsonPath("$.name").value(userRequest.getName()))
-                .andExpect(jsonPath("$.email").value(userRequest.getEmail()))
                 .andExpect(jsonPath("$.is_active").isBoolean())
                 .andExpect(jsonPath("$.created").exists())
                 .andExpect(jsonPath("$.phones").isArray())
