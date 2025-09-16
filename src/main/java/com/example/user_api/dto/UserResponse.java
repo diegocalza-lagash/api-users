@@ -21,7 +21,6 @@ import java.util.UUID;
 public class UserResponse {
     private UUID id;
     private String name;
-    private String email;
     
     @JsonProperty("created")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

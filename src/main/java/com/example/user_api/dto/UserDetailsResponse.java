@@ -22,7 +22,6 @@ public class UserDetailsResponse extends UserResponse {
         UserDetailsResponse response = UserDetailsResponse.builder()
                 .id(user.getId())
                 .name(user.getName())
-                .email(user.getEmail())
                 .created(user.getCreated())
                 .modified(user.getModified())
                 .lastLogin(user.getLastLogin())
