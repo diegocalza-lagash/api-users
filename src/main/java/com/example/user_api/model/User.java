@@ -64,12 +64,6 @@ public class User {
         }
     }
     
-    public void removePhone(Phone phone) {
-        if (phone != null) {
-            this.phones.remove(phone);
-            phone.setUser(null);
-        }
-    }
     
     @PrePersist
     protected void onCreate() {

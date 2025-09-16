@@ -1,15 +1,19 @@
 package com.example.user_api.service;
 
 import com.example.user_api.dto.PhoneDto;
+import com.example.user_api.dto.UserDetailsResponse;
 import com.example.user_api.dto.UserRequest;
 import com.example.user_api.dto.UserResponse;
 import com.example.user_api.exception.EmailAlreadyExistsException;
+import com.example.user_api.exception.UserNotFoundException;
 import com.example.user_api.model.User;
 import com.example.user_api.repository.UserRepository;
 import com.example.user_api.util.TokenGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 
 @Service
@@ -53,6 +57,13 @@ public class UserService {
         return mapToUserResponse(savedUser);
     }
 
+    @Transactional(readOnly = true)
+    public UserDetailsResponse getUserById(UUID id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado con ID: " + id));
+        return UserDetailsResponse.fromEntity(user);
+    }
+
     private UserResponse mapToUserResponse(User user) {
         return UserResponse.builder()
                 .id(user.getId())
@@ -61,8 +72,8 @@ public class UserService {
                 .created(user.getCreated())
                 .modified(user.getModified())
                 .lastLogin(user.getLastLogin())
-                .isActive(user.isActive())
                 .token(user.getToken())
+                .isActive(user.isActive())
                 .build();
     }
 }

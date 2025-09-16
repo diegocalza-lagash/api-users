@@ -1,5 +1,6 @@
 package com.example.user_api.controller;
 
+import com.example.user_api.dto.PhoneDto;
 import com.example.user_api.dto.UserRequest;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,6 +15,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.util.List;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -100,8 +103,19 @@ public class UserControllerTest {
     private UserRequest createValidUserRequest() {
         UserRequest userRequest = new UserRequest();
         userRequest.setName("Test User");
-        userRequest.setEmail("test" + System.currentTimeMillis() + "@example.com");
-        userRequest.setPassword("ValidPass123");
+        userRequest.setEmail("test@example.com");
+        userRequest.setPassword("Validpass12");
+        
+        // Create phone DTO
+        PhoneDto phone = PhoneDto.builder()
+                .number("1234567")
+                .cityCode("1")
+                .countryCode("57")
+                .build();
+        
+        // Set phones list
+        userRequest.setPhones(List.of(phone));
+        
         return userRequest;
     }
 }
