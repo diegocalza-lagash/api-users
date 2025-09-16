@@ -1,5 +1,6 @@
 package com.example.user_api.service;
 
+import com.example.user_api.dto.PhoneDto;
 import com.example.user_api.dto.UserRequest;
 import com.example.user_api.dto.UserResponse;
 import com.example.user_api.exception.EmailAlreadyExistsException;
@@ -26,7 +27,7 @@ public class UserService {
         }
 
     
-        // Create user with JWT token
+        // Create user with JWT token and phones
         User user = User.builder()
                 .name(userRequest.getName())
                 .email(userRequest.getEmail())
@@ -34,6 +35,19 @@ public class UserService {
                 .password(userRequest.getPassword())
                 .token(tokenGenerator.generateToken(userRequest.getEmail()))
                 .build();
+
+        // Add phones to user
+        if (userRequest.getPhones() != null && !userRequest.getPhones().isEmpty()) {
+            for (PhoneDto phoneDto : userRequest.getPhones()) {
+                User.Phone phone = User.Phone.builder()
+                        .number(phoneDto.getNumber())
+                        .cityCode(phoneDto.getCityCode())
+                        .countryCode(phoneDto.getCountryCode())
+                        .user(user)
+                        .build();
+                user.addPhone(phone);
+            }
+        }
 
         User savedUser = userRepository.save(user);
         return mapToUserResponse(savedUser);

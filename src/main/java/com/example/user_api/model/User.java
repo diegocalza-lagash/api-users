@@ -7,7 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Data
 @NoArgsConstructor
@@ -49,6 +53,24 @@ public class User {
     
     private String token;
     
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Phone> phones = new ArrayList<>();
+    
+    public void addPhone(Phone phone) {
+        if (phone != null) {
+            phone.setUser(this);
+            this.phones.add(phone);
+        }
+    }
+    
+    public void removePhone(Phone phone) {
+        if (phone != null) {
+            this.phones.remove(phone);
+            phone.setUser(null);
+        }
+    }
+    
     @PrePersist
     protected void onCreate() {
         LocalDateTime now = LocalDateTime.now();
@@ -83,10 +105,12 @@ public class User {
         @Column(nullable = false, length = 20)
         private String number;
         
-        @Column(name = "city_code", nullable = false, length = 10)
+        @Column(name = "citycode", nullable = false, length = 10)
+        @JsonProperty("citycode")
         private String cityCode;
         
-        @Column(name = "country_code", nullable = false, length = 10)
+        @Column(name = "contrycode", nullable = false, length = 10)
+        @JsonProperty("contrycode")
         private String countryCode;
     }
 }
