@@ -46,12 +46,7 @@ classDiagram
         -user: User
     }
     
-    class UserRequest {
-        +name: String
-        +email: String
-        +password: String
-        +phones: List~PhoneDto~
-    }
+
     
     class PhoneDto {
         +number: String
