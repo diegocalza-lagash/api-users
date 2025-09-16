@@ -1,6 +1,6 @@
 # User API
 
-A RESTful API for user management with JWT authentication.
+A RESTful API user register challenge for EY Consulting.
 
 ## Architecture Overview
 
@@ -57,9 +57,6 @@ classDiagram
         +handleMethodArgumentNotValid(MethodArgumentNotValidException)
     }
     
-    class SecurityConfig {
-        +securityFilterChain(HttpSecurity)
-    }
     
     UserController --> UserService
     UserService --> UserRepository
@@ -68,7 +65,6 @@ classDiagram
     UserController ..> UserRequest
     UserController ..> UserResponse
     GlobalExceptionHandler ..> ErrorResponse
-    SecurityConfig --> JwtRequestFilter
 ```
 
 ## API Endpoints
@@ -123,7 +119,7 @@ Run the tests with:
 - Spring Boot 3.x
 - Spring Security
 - JWT Authentication
-- H2 Database (for development)
+- H2 Database
 - JPA/Hibernate
 - JUnit 5
-- Maven/Gradle
+- Gradle
